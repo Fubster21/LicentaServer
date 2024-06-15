@@ -30,11 +30,17 @@ public class AuthenticationService {
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(UserRole.STANDARD)
+                .phone(request.getPhone())
+                .address(request.getAddress())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getId().toString())
+                .role(user.getRole())
                 .build();
     }
 
@@ -49,6 +55,8 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getId().toString())
+                .role(user.getRole())
                 .build();
     }
 }

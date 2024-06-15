@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
-        return modelMapper.map(user, UserResponseDTO.class);
+        var result = modelMapper.map(user, UserResponseDTO.class);
+        return result;
     }
 
     @Override

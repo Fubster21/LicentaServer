@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.upt.etc.licenta.repository.dto.ProductDTO;
+import ro.upt.etc.licenta.repository.entity.Category;
+import ro.upt.etc.licenta.repository.entity.Product;
 import ro.upt.etc.licenta.service.ProductService;
 
 import java.util.List;
@@ -45,4 +47,13 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam String name) {
         return ResponseEntity.ok(productService.searchProductsByName(name));
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long categoryId) {
+        Category category = new Category();
+        category.setId(categoryId);
+        List<Product> products = productService.getProductsByCategory(category);
+        return ResponseEntity.ok(products);
+    }
+
 }

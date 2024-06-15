@@ -27,6 +27,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserResponseDTO userResponseDTO) {
+
         return ResponseEntity.ok(userService.updateUser(id, userResponseDTO));
     }
 
@@ -38,6 +39,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        System.out.println("============" + id);
         return ResponseEntity.ok(userService.getUserById(id));
     }
 

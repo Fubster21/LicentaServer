@@ -41,7 +41,7 @@ public class SupplierController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<SupplierResponseDTO>> searchSuppliers(@RequestParam String name) {
+    public ResponseEntity<List<SupplierResponseDTO>> searchSuppliersByName(@RequestParam String name) {
         return ResponseEntity.ok(supplierService.searchSuppliersByName(name));
     }
 }

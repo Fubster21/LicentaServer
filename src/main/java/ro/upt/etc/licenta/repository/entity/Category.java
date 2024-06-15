@@ -1,31 +1,30 @@
 package ro.upt.etc.licenta.repository.entity;
 
+
+
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "suppliers")
+@Table(name = "category")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Supplier {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "supplier_id")
     private Long id;
 
     private String name;
-    private String address;
-    private String phone;
-    private String email;
 
-//    @OneToMany(mappedBy = "supplier")
-//    private List<Product> products;
+    @ManyToMany(mappedBy = "categories")
+    private Set<Product> products = new HashSet<>();
 }

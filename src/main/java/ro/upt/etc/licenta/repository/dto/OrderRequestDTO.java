@@ -14,4 +14,5 @@ public class OrderRequestDTO {
     private Date dateTo;
     private Long userId;
     private OrderState orderState;
+    private List<OrderItemResponseDTO> orderItems;
 }

@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Entity
 @Table(name = "products")
@@ -26,16 +29,19 @@ public class Product {
     private Double price;
     private int stockQuantity;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
     private Image image;
 
-
-//    @JsonIgnoreProperties("ideas")
 //    @ManyToOne
-//    @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
-//    private Order order;
+//    @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id", nullable = false)
+//    private Supplier supplier;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id", nullable = false)
-    private Supplier supplier;
+    @ManyToMany
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 }
