@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: licenta
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      format_sql: true
+      use_sql_comments: true
+      generate_statistics: true
+      type:
+        default:
+          org.hibernate.type.descriptor.sql.spi:
+            SqlTypeDescriptor: org.hibernate.type.descriptor.sql.internal.descriptor.BasicBinder
+      ddl-auto: update
+      default-schema: public
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
