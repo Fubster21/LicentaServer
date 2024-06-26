@@ -47,6 +47,11 @@ public class OrderServiceImpl implements OrderService {
                         .product(getProductByIdInternal(oi.getProduct().getId()))
                         .quantity(oi.getQuantity())
                         .build())
+                .peek(oi -> {
+                    var currentStockQuantity = oi.getProduct().getStockQuantity();
+                    oi.getProduct().setStockQuantity(currentStockQuantity - oi.getQuantity());
+                    productRepository.save(oi.getProduct());
+                })
                 .collect(Collectors.toList());
 
         Order order = Order.builder()

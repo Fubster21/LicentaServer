@@ -20,5 +20,5 @@ public interface ProductService {
     ProductDTO getProductById(Long id);
     List<ProductDTO> searchProductsByName(String name);
 //    List<ProductDTO> getProductsByCategory(String categoryName);
-    List<Product> getProductsByCategory(Category category);
+    List<ProductDTO> getProductsByCategory(Long catId);
 }

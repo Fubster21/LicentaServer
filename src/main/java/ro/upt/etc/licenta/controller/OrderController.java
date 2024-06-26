@@ -1,6 +1,7 @@
 package ro.upt.etc.licenta.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.upt.etc.licenta.repository.dto.OrderRequestDTO;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
+@Log4j2
 public class OrderController {
     private final OrderService orderService;
 
@@ -22,6 +24,7 @@ public class OrderController {
 
     @PostMapping("/new")
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+        log.info("Received new order request: " + orderRequestDTO);
         return ResponseEntity.ok(orderService.createOrder(orderRequestDTO));
     }
 

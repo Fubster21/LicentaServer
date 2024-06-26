@@ -1,7 +1,10 @@
 package ro.upt.etc.licenta.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.upt.etc.licenta.repository.CategoryRepository;
@@ -25,10 +28,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -36,10 +39,15 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll().stream()
                 .map(product -> {
                     ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-                    productDTO.setImage(product.getImage() != null ? Base64.getEncoder().encodeToString(product.getImage().getImage()) : null);
+                    productDTO.setImage(getImageBase64(product));
                     return productDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private String getImageBase64(Product product) {
+        if (product.getImage() == null) { return null; }
+        return Base64.getEncoder().encodeToString(product.getImage().getImage());
     }
 
     @Override
@@ -71,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
         var product = Product.builder()
                 .name(productDTO.getName())
                 .description(productDTO.getDescription())
-                .colour(productDTO.getColour())
+//                .colour(productDTO.getColour())
                 .price(productDTO.getPrice())
                 .stockQuantity(productDTO.getStockQuantity())
 //                .supplier(supplier)
@@ -114,8 +122,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategory(Category category) {
-        return productRepository.findByCategories(category);
+    public List<ProductDTO> getProductsByCategory(Long catId) {
+        var category = categoryRepository.findById(catId).orElseThrow();
+        var categoryDto = modelMapper.map(category, CategoryDto.class);
+        log.info("querying by category: {}", category.getName());
+
+        var entities = productRepository.findByCategories(category);
+
+//        entities.forEach(e -> {
+//            log.info("entity {} has categories {}", e.getName(), e.getCategories());
+//        });
+
+        var prodList = entities.stream()
+                .map(product -> {
+                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+                    productDTO.setImage(getImageBase64(product));
+                    return productDTO;
+                })
+                .peek(productDTO -> productDTO.setCategories(List.of(categoryDto)))
+                .toList();
+        return prodList;
     }
 
 //    @Override

@@ -1,6 +1,8 @@
 package ro.upt.etc.licenta.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.upt.etc.licenta.repository.UserRepository;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @GetMapping("/all")
@@ -40,7 +43,9 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         System.out.println("============" + id);
-        return ResponseEntity.ok(userService.getUserById(id));
+        var user = userService.getUserById(id);
+        log.info("user: {}", user);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/search")

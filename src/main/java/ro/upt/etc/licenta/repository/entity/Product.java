@@ -20,22 +20,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
     private Long id;
-
     private String name;
-
     @Column(name = "description", length = 255)
     private String description;
-    private String colour;
     private Double price;
     private int stockQuantity;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image;
-
-//    @ManyToOne
-//    @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id", nullable = false)
-//    private Supplier supplier;
 
     @ManyToMany
     @JoinTable(
