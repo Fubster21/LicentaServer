@@ -29,7 +29,7 @@ public class AuthenticationService {
         var user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(UserRole.STANDARD)
+                .role("admin".equals(request.getUsername())? UserRole.ADMIN : UserRole.STANDARD)
                 .phone(request.getPhone())
                 .address(request.getAddress())
                 .firstName(request.getFirstName())
